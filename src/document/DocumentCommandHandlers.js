@@ -22,7 +22,7 @@
  */
 
 
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
+/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50, regexp: true */
 /*global define, $, brackets, PathUtils, window */
 
 define(function (require, exports, module) {
@@ -608,12 +608,8 @@ define(function (require, exports, module) {
                 } else { // Working set  has file selection focus
                     // replace original file in working set with new file
                     //  remove old file from working set.
-                    DocumentManager.removeFromWorkingSet(doc.file);
-                    //add new file to working set
-                    FileViewController
-                        .addToWorkingSetAndSelect(path,
-                                        FileViewController.WORKING_SET_VIEW)
-                        .always(_configureEditorAndResolve);
+                    DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);
+                    _configureEditorAndResolve();
                 }
             }
             
