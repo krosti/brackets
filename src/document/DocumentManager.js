@@ -250,19 +250,20 @@ define(function (require, exports, module) {
     function replaceInWorkingSet(newFile, oldFile) {
         var targetIndex = findInWorkingSet(oldFile.fullPath);
         
-        // If doc is already in working set, don't add it again
-/*        if (targetIndex === -1) {
-            // just open new file and add to working set
-        }*/
-        
         // Add to _workingSet making sure we store a different instance from the
         // one in the Document. See issue #1971 for more details.        
         newFile = new NativeFileSystem.FileEntry(newFile.fullPath);
-        _workingSet[targetIndex] = newFile;
+        _workingSet.splice(targetIndex, 1, newFile);
+        
+
+        var filePair = [newFile, oldFile];
+        // Dispatch event
+        $(exports).triggerHandler("workingSetReplace", [filePair]);
+        getDocumentForPath(newFile.fullPath).always(function(newDoc){
+            setCurrentDocument(newDoc);
+        });
 
         
-        // Dispatch event
-        $(exports).triggerHandler("workingSetAdd", newFile);
     }
 
     /**

@@ -609,7 +609,11 @@ define(function (require, exports, module) {
                     // replace original file in working set with new file
                     //  remove old file from working set.
                     DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);
-                    _configureEditorAndResolve();
+                    FileViewController
+                        .openAndSelectDocument(path,
+                                          FileViewController.WORKING_SET_VIEW)
+                        .always(_configureEditorAndResolve);                    
+                    //_configureEditorAndResolve();
                 }
             }
             
