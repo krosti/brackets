@@ -608,7 +608,10 @@ define(function (require, exports, module) {
                 } else { // Working set  has file selection focus
                     // replace original file in working set with new file
                     //  remove old file from working set.
-                    DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);                 
+                    if (DocumentManager.findInWorkingSet(path)) {
+                        DocumentManager.removeFromWorkingSet(new NativeFileSystem.FileEntry(path));
+                    }
+                    DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);
                     _configureEditorAndResolve();
                 }
             }
