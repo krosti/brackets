@@ -253,15 +253,20 @@ define(function (require, exports, module) {
         // Add to _workingSet making sure we store a different instance from the
         // one in the Document. See issue #1971 for more details.        
         newFile = new NativeFileSystem.FileEntry(newFile.fullPath);
-        _workingSet.splice(targetIndex, 1, newFile);
-        
-
         var filePair = [newFile, oldFile];
         // Dispatch event
         $(exports).triggerHandler("workingSetReplace", [filePair]);
-        getDocumentForPath(newFile.fullPath).always(function(newDoc){
-            setCurrentDocument(newDoc);
-        });
+        
+        //_workingSet.splice(targetIndex, 1, newFile);
+        var temp = _workingSet[targetIndex];
+        temp.fullPath = newFile.fullPath;
+        temp.name = newFile.name;
+        _workingSet[targetIndex] = temp;
+
+
+//        getDocumentForPath(newFile.fullPath).always(function(newDoc){
+//            setCurrentDocument(newDoc);
+//        });
 
         
     }

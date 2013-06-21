@@ -608,11 +608,7 @@ define(function (require, exports, module) {
                 } else { // Working set  has file selection focus
                     // replace original file in working set with new file
                     //  remove old file from working set.
-                    DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);
-//                    FileViewController
-//                        .openAndSelectDocument(path,
-//                                          FileViewController.WORKING_SET_VIEW)
-//                        .always(_configureEditorAndResolve);                    
+                    DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);                 
                     _configureEditorAndResolve();
                 }
             }
