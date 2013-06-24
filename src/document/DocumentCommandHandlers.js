@@ -582,6 +582,7 @@ define(function (require, exports, module) {
     function _doSaveAs(doc, settings) {
         var fullPath,
             saveAsDefaultPath,
+            newDoc,
             defaultName,
             result = new $.Deferred();
                 
@@ -606,11 +607,13 @@ define(function (require, exports, module) {
                                           FileViewController.PROJECT_MANAGER)
                         .always(_configureEditorAndResolve);
                 } else { // Working set  has file selection focus
-                    // replace original file in working set with new file
-                    //  remove old file from working set.
-                    if (DocumentManager.findInWorkingSet(path)) {
-                        DocumentManager.removeFromWorkingSet(new NativeFileSystem.FileEntry(path));
+                    // if save as replaced a file that was open in the working set, 
+                    // the replaced file needs to be removed from the working set.
+                    if (DocumentManager.findInWorkingSet(newDoc.file.fullPath)) {
+                        DocumentManager.removeFromWorkingSet(newDoc.file);
                     }
+                    // replace original file in working set with new file
+                    //  remove old file from working set.                    
                     DocumentManager.replaceInWorkingSet(new NativeFileSystem.FileEntry(path), doc.file);
                     _configureEditorAndResolve();
                 }
@@ -626,7 +629,9 @@ define(function (require, exports, module) {
                 if (error) {
                     result.reject(error);
                 } else {
-                    DocumentManager.getDocumentForPath(path).done(function (newDoc) {
+                    DocumentManager.getDocumentForPath(path).done(function (savedDoc) {
+                        // 
+                        newDoc = savedDoc;
                         FileUtils.writeText(newDoc.file, doc.getText()).done(function () {
                             ProjectManager.refreshFileTree().done(function () {
                                 // do not call doRevert unless the file is dirty.
