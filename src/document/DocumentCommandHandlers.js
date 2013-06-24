@@ -630,7 +630,6 @@ define(function (require, exports, module) {
                     result.reject(error);
                 } else {
                     DocumentManager.getDocumentForPath(path).done(function (savedDoc) {
-                        // 
                         newDoc = savedDoc;
                         FileUtils.writeText(newDoc.file, doc.getText()).done(function () {
                             ProjectManager.refreshFileTree().done(function () {
