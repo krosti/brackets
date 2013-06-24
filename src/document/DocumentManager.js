@@ -257,18 +257,10 @@ define(function (require, exports, module) {
         // Dispatch event
         $(exports).triggerHandler("workingSetReplace", [filePair]);
         
-        //_workingSet.splice(targetIndex, 1, newFile);
         var temp = _workingSet[targetIndex];
         temp.fullPath = newFile.fullPath;
         temp.name = newFile.name;
         _workingSet[targetIndex] = temp;
-
-
-//        getDocumentForPath(newFile.fullPath).always(function(newDoc){
-//            setCurrentDocument(newDoc);
-//        });
-
-        
     }
 
     /**
